@@ -18,7 +18,9 @@ require_once('Deviceid.php');
 				
 		var SERVER_ADDRESS = {host: "spaceify.net", port: 1979};
 		var WEBRTC_CONFIG = {"iceServers":[{url:"stun:kandela.tv"},{url :"turn:kandela.tv", username:"webrtcuser", credential:"jeejeejee"}]};
-			
+		
+		var screenId = null;
+		
 		function TestController()
 			{
 			var self = this;
@@ -29,6 +31,9 @@ require_once('Deviceid.php');
 				{
 				gameClient = new GameClient(); 
 				gameClient.setScreenConnectionTypeListener(self, self.onScreenConnectionTypeUpdated);
+				
+				gameClient.setScreenConnectionListener(self, self.onScreenConnected);
+				gameClient.exposeRpcMethod( "onImageChange", self, self.onImageChange);
 				
 				//Development connection
 				gameClient.connect(SERVER_ADDRESS.host, SERVER_ADDRESS.port, "controller", GROUP_NAME, function(){});
@@ -52,6 +57,20 @@ require_once('Deviceid.php');
 				console.log("TestController::onScreenConnectionTypeUpdated() new connection type: " + newConnectionType);
 				document.getElementById("conntype").innerHTML = newConnectionType;
 				};
+			
+			self.onScreenConnected = function(id)
+				{
+				console.log("RpcController::onScreenConnected() screenId: " + id);
+				screenId = id;
+				};
+
+			self.onImageChange = function(id, callerId, connectionId, callback)
+				{
+				//console.log("TestSreen::onButtonPressed() x: "+x+" y: "+y+" callerId: "+callerId+" connectionId: "+connectionId);
+				document.getElementById("id_message").innerHTML = id;
+				
+				callback(null, "GOT IT! Id is "+ id);
+				};
 			}
 		
 		var controller = null; 
@@ -73,6 +92,9 @@ require_once('Deviceid.php');
 	</h2>
 	<h3>
 		Please open the browser console to see what is happening!
+	</h3>
+	<h3>
+		ID sent by screen: <span id="id_message">NO ID</span>
 	</h3>
 	<h3>Connectiontype to the screen:</h3><h3 id="conntype">Cloud</h3>
 	<button onclick="controller.sendButtonPress();">Send button press to Server</button><!-- send button id and device id from here -->

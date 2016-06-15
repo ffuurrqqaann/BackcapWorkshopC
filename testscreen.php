@@ -22,6 +22,13 @@
 			
 			var buttonPressCounter = 0;
 			
+			var controllerIds = [];
+			
+			self.onControllerConnected = function(id)
+				{
+				//console.log("RpcController::onScreenConnected() screenId: " + id);
+				controllerIds.push(id);
+				};
 			
 			self.onButtonPressed = function(x, y, callerId, connectionId, callback)
 				{
@@ -32,6 +39,8 @@
 				
 			self.connect = function()
 				{
+				gameClient.setControllerConnectionListener(self, self.onControllerConnected);
+				
 				gameClient.exposeRpcMethod( "onButtonPressed", self, self.onButtonPressed);			
 				
 				gameClient.connect(SERVER_ADDRESS.host, SERVER_ADDRESS.port, "screen", GROUP_NAME, function(){});
@@ -39,6 +48,18 @@
 				// Connect for deployment
 				//gameClient.connectAsScreen("phaseroid", document.getElementById("url"), document.getElementById("qr"), function() {});	
 				};
+				
+			self.imageChanged = function()
+				{
+					//console.log("RpcController::sendButtonPress()");
+					for (controllerId of controllerIds) {
+  						gameClient.callClientRpc(controllerId, "onImageChange",[controllerId+"-123"], self, function(err, data)
+						{
+						temp = document.getElementById("reply").innerHTML;	
+						document.getElementById("reply").innerHTML= temp + "<br/>" + data;
+						});
+					}	  
+				}
 			}
 		
 		var screen = new TestScreen();
@@ -64,6 +85,9 @@
 	<h3>
 		Message from the controller: <span id="message"></message>
 	</h3>
+	
+	<button onclick="screen.imageChanged();">SEND ID TO CONTROLLER</button>
+	<h3>ID RPC reply from controller: </h3><h3 id="reply"></h3>
 	
 	<!-- Uncomment for deployment
 	<h3 id="url">
