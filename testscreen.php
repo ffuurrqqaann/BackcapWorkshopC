@@ -8,7 +8,7 @@
 			
 		//Group name for development use
 				
-		var GROUP_NAME = "own_group";
+		var GROUP_NAME = "Grand Theft Washing Machine";
 		
 		var SERVER_ADDRESS = {host: "spaceify.net", port: 1979};
 		var WEBRTC_CONFIG = {"iceServers":[{url:"stun:kandela.tv"},{url :"turn:kandela.tv", username:"webrtcuser", credential:"jeejeejee"}]};
@@ -54,6 +54,7 @@
 		</title>
 	</head>
 <body>
+
 	<h2>
 		TestScreen for communicationhub
 	</h2>

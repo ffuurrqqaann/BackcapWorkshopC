@@ -1,16 +1,20 @@
-<!DOCTYPE html>
+<?php
+error_reporting(0);
+require_once('Deviceid.php');
+?>
+<!DOCTYP1E html>
 <html>
 	<head>
 		<meta charset="UTF-8">
 		
-		<script type="text/javascript" src="http://spaceify.net/games/g/gamelib.min.js"></script>
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"/> 
 		
-		
+		<script type="text/javascript" src="http://spaceify.net/games/g/gamelib.min.js"></script>		
 		<script type="text/javascript">	
 				
 		//Group name for development use
 				
-		var GROUP_NAME = "own_group";
+		var GROUP_NAME = "Grand Theft Washing Machine";
 				
 		var SERVER_ADDRESS = {host: "spaceify.net", port: 1979};
 		var WEBRTC_CONFIG = {"iceServers":[{url:"stun:kandela.tv"},{url :"turn:kandela.tv", username:"webrtcuser", credential:"jeejeejee"}]};
@@ -33,10 +37,14 @@
 				//gameClient.connectAsController(function(){});	
 				};
 			
-			self.sendButtonPress = function()
+			self.sendButtonPress = function(buttonId)
 				{
-				console.log("TestController::sendButtonPress()");
-				gameClient.notifyScreens("onButtonPressed",[100,200]);
+					var deviceId = "<?php echo $mobileDeviceId ?>";
+					//alert(deviceId);
+					console.log("device id is "+ deviceId);
+					//alert("button id is "+buttonId);
+					console.log("device id is "+deviceId);
+					gameClient.notifyScreens("onButtonPressed",[100,200]);
 				};
 				
 			self.onScreenConnectionTypeUpdated = function(newConnectionType, screenId)
@@ -67,6 +75,9 @@
 		Please open the browser console to see what is happening!
 	</h3>
 	<h3>Connectiontype to the screen:</h3><h3 id="conntype">Cloud</h3>
-	<button onclick="controller.sendButtonPress();">Send button press to Server</button>
+	<button onclick="controller.sendButtonPress();">Send button press to Server</button><!-- send button id and device id from here -->
+	<br/>
+	<?php require('buttons.php'); ?>
+	
 </body>
 </html>
