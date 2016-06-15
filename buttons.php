@@ -2,7 +2,7 @@
 	
 require_once('database.php');
 
-$sql = "SELECT id, name FROM responses";
+$sql = "SELECT id, name FROM options";
 $result = $conn->query($sql);
 
 $buttonDiv ="<div>";
