@@ -10,10 +10,11 @@ require_once('Deviceid.php');
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"/> 
 		
 		<script type="text/javascript" src="http://spaceify.net/games/g/gamelib.min.js"></script>		
+		<script type="text/javascript" src="https://code.jquery.com/jquery-3.0.0.min.js"></script>		
 		<script type="text/javascript">	
 				
 		//Group name for development use
-				
+		
 		var GROUP_NAME = "Grand Theft Washing Machine";
 				
 		var SERVER_ADDRESS = {host: "spaceify.net", port: 1979};
@@ -21,11 +22,26 @@ require_once('Deviceid.php');
 		
 		var screenId = null;
 		
+		function insertAnswer( questionId, deviceId, buttonId ) {
+			jQuery.ajax({
+			  url: "InsertAnswer.php",
+			  type: "GET",
+			  data: {
+				question_id : questionId,
+				device : deviceId,
+				button : buttonId
+			  },
+			  success: function( result ) {
+				alert(result);
+			  }
+			});
+		}
+		
 		function TestController()
 			{
 			var self = this;
-			
 			var gameClient = null;
+			var questionId = null;
 			
 			self.connect = function()
 				{
@@ -45,11 +61,10 @@ require_once('Deviceid.php');
 			self.sendButtonPress = function(buttonId)
 				{
 					var deviceId = "<?php echo $mobileDeviceId ?>";
-					//alert(deviceId);
-					console.log("device id is "+ deviceId);
-					//alert("button id is "+buttonId);
-					console.log("device id is "+deviceId);
-					gameClient.notifyScreens("onButtonPressed",[100,200]);
+					var btnId = buttonId;
+					insertAnswer( questionId, deviceId, btnId );
+					
+					//gameClient.notifyScreens("onButtonPressed",[100,200]);
 				};
 				
 			self.onScreenConnectionTypeUpdated = function(newConnectionType, screenId)
@@ -67,9 +82,10 @@ require_once('Deviceid.php');
 			self.onImageChange = function(id, callerId, connectionId, callback)
 				{
 				//console.log("TestSreen::onButtonPressed() x: "+x+" y: "+y+" callerId: "+callerId+" connectionId: "+connectionId);
+				questionId = id;
 				document.getElementById("id_message").innerHTML = id;
 				
-				callback(null, "GOT IT! Id is "+ id);
+				//callback(null, "GOT IT! Id is "+ id);
 				};
 			}
 		
