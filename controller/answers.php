@@ -83,7 +83,7 @@ require_once('../utils/Deviceid.php');
 </head>
 <body>
 	<div class="container">
-		<div class="row">
+		<div class="row text-center">
 			<div class="col-xs-12">
 				<img id="img_url" class="img-rounded" src="../pics/no_image.png" height="70" width="100">
 			</div>
@@ -91,7 +91,7 @@ require_once('../utils/Deviceid.php');
 				<span id="text"></span>
 			</div>
 		</div>
-		<div class="row">
+		<div class="row text-center">
 			<div class="col-xs-12">
 				<?php require('buttons.php'); ?>
 			</div>
