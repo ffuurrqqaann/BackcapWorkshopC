@@ -2,7 +2,7 @@
 error_reporting(0);
 require_once('Deviceid.php');
 ?>
-<!DOCTYP1E html>
+<!DOCTYPE html>
 <html>
 	<head>
 		<meta charset="UTF-8">
@@ -70,22 +70,21 @@ require_once('Deviceid.php');
 			self.onScreenConnectionTypeUpdated = function(newConnectionType, screenId)
 				{
 				console.log("TestController::onScreenConnectionTypeUpdated() new connection type: " + newConnectionType);
-				document.getElementById("conntype").innerHTML = newConnectionType;
+				//document.getElementById("conntype").innerHTML = newConnectionType;
 				};
 			
 			self.onScreenConnected = function(id)
 				{
 				console.log("RpcController::onScreenConnected() screenId: " + id);
 				screenId = id;
+				
 				};
 
 			self.onImageChange = function(id, url, callerId, connectionId, callback)
 				{
 				//console.log("TestSreen::onButtonPressed() x: "+x+" y: "+y+" callerId: "+callerId+" connectionId: "+connectionId);
 				questionId = id;
-				document.getElementById("id_message").innerHTML = id + " (" + url + ")";
 				$("#img_url").attr("src","pics/"+url);
-				
 				jQuery('button[id="voteBtn"]').prop('disabled', false);
 
 				//callback(null, "GOT IT! Id is "+ id);
@@ -106,19 +105,7 @@ require_once('Deviceid.php');
 		</title>
 	</head>
 <body>
-	<h2>
-		Controller 
-	</h2>
-	<h3>
-		Please open the browser console to see what is happening!
-	</h3>
-	<img id="img_url" src="no_image.jpg" height="70" width="100">;
-	<h3>
-		ID sent by screen: <span id="id_message">NO ID</span>
-	</h3>
-	<h3>Connectiontype to the screen:</h3><h3 id="conntype">Cloud</h3>
-	<button onclick="controller.sendButtonPress();">Send button press to Server</button><!-- send button id and device id from here -->
-	<br/> 
+	<img id="img_url" src="no_image.jpg" height="70" width="100">
 	<?php require('buttons.php'); ?>
 	
 </body>
