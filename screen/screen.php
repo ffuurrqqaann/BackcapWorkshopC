@@ -2,14 +2,53 @@
 <html>
 <head>
 	<style>
-		h1 {
+		#text {
 			color: white;
 			text-align: center;
 			font-size: 270%;
 		}
-		body {
-			background-color: black;
+		#engage {
+			color: white;
+			text-align: center;
+			font-size: 170%;
 		}
+		html body {
+			background-color: rgba(0,0,0,1.00);
+		}
+		.wrapper{
+			-webkit-background-size: cover;
+			-moz-background-size: cover;
+			-o-background-size: cover;
+			background-size: cover;
+		}
+		
+		/* fullscreen setup */
+		html, body {
+			/* give this to all tags from html to .fullscreen */
+			height:100%;
+		}
+		.fullscreen,
+		.content-a {
+			width:100%;
+			height:100%;
+			overflow:hidden;
+		}
+		.fullscreen.overflow,
+		.fullscreen.overflow .content-a {
+			height:auto;
+			min-height:100%;
+		}
+		/* content centering styles */
+		.content-a {
+			display:table;
+		}
+		.content-b {
+			display:table-cell;
+			position:relative;
+			vertical-align:middle;
+			text-align:center;
+		}
+		
 	</style>
 	<meta charset="UTF-8">
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"/> 
@@ -61,6 +100,11 @@
 	</title>
 </head>
 <body>
+
+	<section class="fullscreen">
+		<div class="content-a">
+			<div class="content-b">
+
 <?php
 	require_once('../utils/database.php');
 	$textArray = array();
@@ -77,7 +121,7 @@
 			$urlsArray[$row_number] = $row['image_url'];
 			$urlsArray[$row_number] = $row['image_url'];
 			$row_number=$row_number+1;
-			echo "<img class=\"mySlides img-rounded\" src=\"../pics/" . $pic . "\" height=\"470\" width=\"620\">";
+			echo "<img class=\"mySlides img-rounded img-responsive\" src=\"../pics/" . $pic . "\" height=\"470\" width=\"620\">";
 		}
 		echo "</div>";
 	}
@@ -86,8 +130,14 @@
 	}
 	$conn = null;
 ?>
-	<h1 id="text"></h1>
-	<h1>Answer via panoulu_ac http://<?php echo $_SERVER['HTTP_HOST'];?>/controller.php</h1>
+
+
+
+					<p class="text-center" id="text"></p>
+					<p class="text-center" id="engage">Answer via panoulu_ac http://<?php echo $_SERVER['HTTP_HOST'];?>/controller.php</p>
+		</div>
+	</section>
+
 	<script>
 <?php
 		$js_text_array = json_encode(array_values($textArray));
