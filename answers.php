@@ -86,6 +86,8 @@ require_once('Deviceid.php');
 				document.getElementById("id_message").innerHTML = id + " (" + url + ")";
 				$("#img_url").attr("src","pics/"+url);
 				
+				jQuery('button[id="voteBtn"]').prop('disabled', false);
+
 				//callback(null, "GOT IT! Id is "+ id);
 				};
 			}

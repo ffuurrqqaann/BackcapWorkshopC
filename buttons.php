@@ -6,7 +6,7 @@ $result = $conn->query($sql);
 $buttonDiv ="<div>";
 if($result->rowCount() > 0){
 	foreach($result as $row){
-		$buttonDiv.= '<button style="margin-left:15px" class="btn btn-large btn-';
+		$buttonDiv.= '<button id="voteBtn" style="margin-left:15px" disabled class="btn btn-large btn-';
 		
 		if($row["id"] == "1") {
 			$buttonDiv.= 'danger"';
