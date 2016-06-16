@@ -53,7 +53,7 @@ body {
 				{
 				gameClient.setControllerConnectionListener(self, self.onControllerConnected);
 
-				gameClient.exposeRpcMethod( "onButtonPressed", self, self.onButtonPressed);			
+				gameClient.exposeRpcMethod( "onButtonPressed", self, self.onButtonPressed);
 				
 				gameClient.connect(SERVER_ADDRESS.host, SERVER_ADDRESS.port, "screen", GROUP_NAME, function(){});
 				
@@ -65,14 +65,14 @@ body {
 				//gameClient.connectAsScreen("phaseroid", document.getElementById("url"), document.getElementById("qr"), function() {});	
 				};
 
-			self.imageChanged = function(id)
+			self.imageChanged = function(id,url)
 				{
 					//console.log("RpcController::sendButtonPress()");
 					for (controllerId of controllerIds) {
-  						gameClient.callClientRpc(controllerId, "onImageChange",[id], self, function(err, data)
+  						gameClient.callClientRpc(controllerId, "onImageChange",[id,url], self, function(err, data)
 						{
-						temp = document.getElementById("reply").innerHTML;	
-						document.getElementById("reply").innerHTML= temp + "<br/>" + data;
+						//temp = document.getElementById("reply").innerHTML;	
+						//document.getElementById("reply").innerHTML= temp + "<br/>" + data;
 						});
 					}	  
 				}
@@ -93,22 +93,28 @@ body {
 <body>
 	
 <?php
-$servername = "127.0.0.1";
-$username = "root";
-$password = "";
-$dbname = "backcap";
+
+require_once('database.php');
+
+
+//$servername = "127.0.0.1";
+//$username = "root";
+//$password = "";
+//$dbname = "backcap";
+
 
 $pic1= "";
 $textArray = array();
 $idsArray = array();
+$urlsArray = array();
 $row_number=0;
 
 try {
 
 	echo "<div class=\"w3-content w3-section\"  align=\"center\">";
 
- 	$conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
- 	$conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+// 	$conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
+// 	$conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 	
 	$stmt=$conn->query("SELECT id,text,image_url FROM backcap.questions ORDER BY id ASC"); 
     foreach($stmt as $row){
@@ -116,6 +122,7 @@ try {
 		$pic= $row['image_url'];
 		$textArray[$row_number]=$row['text'];
 		$idsArray[$row_number] = $row['id'];
+		$urlsArray[$row_number] = $row['image_url'];
 		
 		$row_number=$row_number+1;
 		echo "<img class=\"mySlides\" src=\"pics/" . $pic . "\" height=\"470\" width=\"620\">";
@@ -137,8 +144,11 @@ $conn = null;
 <?php
 $js_array = json_encode(array_values($textArray));
 $js_id_array = json_encode(array_values($idsArray));
+$js_url_array = json_encode(array_values($urlsArray));
+
 echo "var javascript_array = ". $js_array . ";\n";
 echo "var javascript_id_array = ". $js_id_array . ";\n";
+echo "var javascript_url_array = ". $js_url_array . ";\n";
 ?>
 
 
@@ -147,7 +157,7 @@ carousel();
 
 function carousel() {
     var i;
-    var x = document.getElementsByClassName("mySlides");	
+    var x = document.getElementsByClassName("mySlides");
     for (i = 0; i < x.length; i++) {
        x[i].style.display = "none";
     }
@@ -160,7 +170,7 @@ function carousel() {
     setTimeout(carousel, 10000); // Change image every 4 seconds
     document.getElementById("text1").innerHTML =  javascript_array[myIndex-1];
 	
-	screen.imageChanged(javascript_id_array[myIndex-1]);
+	screen.imageChanged(javascript_id_array[myIndex-1],javascript_url_array[myIndex-1]);
 }
 </script>
 	

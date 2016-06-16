@@ -79,11 +79,12 @@ require_once('Deviceid.php');
 				screenId = id;
 				};
 
-			self.onImageChange = function(id, callerId, connectionId, callback)
+			self.onImageChange = function(id, url, callerId, connectionId, callback)
 				{
 				//console.log("TestSreen::onButtonPressed() x: "+x+" y: "+y+" callerId: "+callerId+" connectionId: "+connectionId);
 				questionId = id;
-				document.getElementById("id_message").innerHTML = id;
+				document.getElementById("id_message").innerHTML = id + " (" + url + ")";
+				$("#img_url").attr("src","pics/"+url);
 				
 				//callback(null, "GOT IT! Id is "+ id);
 				};
@@ -109,6 +110,7 @@ require_once('Deviceid.php');
 	<h3>
 		Please open the browser console to see what is happening!
 	</h3>
+	<img id="img_url" src="no_image.jpg" height="70" width="100">;
 	<h3>
 		ID sent by screen: <span id="id_message">NO ID</span>
 	</h3>
