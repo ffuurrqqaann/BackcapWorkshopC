@@ -1,14 +1,11 @@
 <?php
-	
 require_once('database.php');
 
-$sql = "SELECT id, name FROM options";
+$sql = "SELECT id, name FROM backcap.options";
 $result = $conn->query($sql);
-
 $buttonDiv ="<div>";
-
-if ($result->num_rows > 0) {
-	while($row = $result->fetch_assoc()) {
+if($result->rowCount() > 0){
+	foreach($result as $row){
 		$buttonDiv.= '<button style="margin-left:15px" class="btn btn-large btn-';
 		
 		if($row["id"] == "1") {
@@ -33,11 +30,7 @@ if ($result->num_rows > 0) {
 } else {
     echo "0 results";
 }
-
 $buttonDiv.="</div>";
-
 echo $buttonDiv;
-
-$conn->close();
-
+$conn=null;
 ?>

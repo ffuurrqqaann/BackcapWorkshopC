@@ -93,15 +93,12 @@ body {
 <body>
 	
 <?php
-
-require_once('database.php');
-
-
 //$servername = "127.0.0.1";
 //$username = "root";
 //$password = "";
 //$dbname = "backcap";
 
+require_once('database.php');
 
 $pic1= "";
 $textArray = array();

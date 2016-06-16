@@ -116,7 +116,7 @@ require_once('Deviceid.php');
 	</h3>
 	<h3>Connectiontype to the screen:</h3><h3 id="conntype">Cloud</h3>
 	<button onclick="controller.sendButtonPress();">Send button press to Server</button><!-- send button id and device id from here -->
-	<br/>
+	<br/> 
 	<?php require('buttons.php'); ?>
 	
 </body>
