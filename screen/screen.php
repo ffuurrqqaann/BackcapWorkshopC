@@ -12,6 +12,7 @@
 		}
 	</style>
 	<meta charset="UTF-8">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"/> 
 	<script type="text/javascript" src="http://spaceify.net/games/g/gamelib.min.js"></script>
 	<script type="text/javascript">	
 		//Group name for development use
@@ -28,7 +29,7 @@
 				{
 					console.log("RpcController::onControllerConnected() controllerId: " + id);
 					controllerIds.push(id);
-					gameClient.callClientRpc(id, "onImageChange",[javascript_id_array[myIndex-1],javascript_url_array[myIndex-1]], self, function(err, data)
+					gameClient.callClientRpc(id, "onImageChange",[javascript_id_array[myIndex-1],javascript_url_array[myIndex-1],javascript_text_array[myIndex-1]], self, function(err, data)
 						{
 							//TODO: NEW CONTROLLER CONNECTED - something on screen?
 						});
@@ -38,11 +39,11 @@
 					gameClient.setControllerConnectionListener(self, self.onControllerConnected);
 					gameClient.connect(SERVER_ADDRESS.host, SERVER_ADDRESS.port, "screen", GROUP_NAME, function(){});
 				};
-			self.imageChanged = function(id,url)
+			self.imageChanged = function(id,url,text)
 				{
 					console.log("RpcController::imageChanged: "+id+" ("+url+")");
 					for (controllerId of controllerIds) {
-  						gameClient.callClientRpc(controllerId, "onImageChange",[id,url], self, function(err, data)
+  						gameClient.callClientRpc(controllerId, "onImageChange",[id,url,text], self, function(err, data)
 						{
 							//TODO: IMAGE HAS CHANGED - something on screen? NO
 						});
@@ -74,9 +75,9 @@
 			$textArray[$row_number]=$row['text'];
 			$idsArray[$row_number] = $row['id'];
 			$urlsArray[$row_number] = $row['image_url'];
-			
+			$urlsArray[$row_number] = $row['image_url'];
 			$row_number=$row_number+1;
-			echo "<img class=\"mySlides\" src=\"../pics/" . $pic . "\" height=\"470\" width=\"620\">";
+			echo "<img class=\"mySlides img-rounded\" src=\"../pics/" . $pic . "\" height=\"470\" width=\"620\">";
 		}
 		echo "</div>";
 	}
@@ -85,14 +86,14 @@
 	}
 	$conn = null;
 ?>
-	<h1 id="text1"></h1>
+	<h1 id="text"></h1>
 	<h1>Answer via panoulu_ac http://<?php echo $_SERVER['HTTP_HOST'];?>/controller.php</h1>
 	<script>
 <?php
-		$js_array = json_encode(array_values($textArray));
+		$js_text_array = json_encode(array_values($textArray));
 		$js_id_array = json_encode(array_values($idsArray));
 		$js_url_array = json_encode(array_values($urlsArray));
-		echo "var javascript_array = ". $js_array . ";\n";
+		echo "var javascript_text_array = ". $js_text_array . ";\n";
 		echo "var javascript_id_array = ". $js_id_array . ";\n";
 		echo "var javascript_url_array = ". $js_url_array . ";\n";
 ?>
@@ -110,8 +111,8 @@
 			}
 			x[myIndex-1].style.display = "block";
 			setTimeout(carousel, 10000); // Change image every 4 seconds
-			document.getElementById("text1").innerHTML =  javascript_array[myIndex-1];
-			screen.imageChanged(javascript_id_array[myIndex-1],javascript_url_array[myIndex-1]);
+			document.getElementById("text").innerHTML =  javascript_text_array[myIndex-1];
+			screen.imageChanged(javascript_id_array[myIndex-1],javascript_url_array[myIndex-1],javascript_text_array[myIndex-1]);
 		}
 	</script>
 </body>

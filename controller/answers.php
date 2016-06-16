@@ -60,11 +60,12 @@ require_once('../utils/Deviceid.php');
 					insertAnswer( questionId, deviceId, btnId );
 					//gameClient.notifyScreens("onButtonPressed",[100,200]);
 				};
-			self.onImageChange = function(id, url, callerId, connectionId, callback)
+			self.onImageChange = function(id, url, text, callerId, connectionId, callback)
 				{
 					//console.log("TestSreen::onButtonPressed() x: "+x+" y: "+y+" callerId: "+callerId+" connectionId: "+connectionId);
 					questionId = id;
 					$("#img_url").attr("src","../pics/"+url);
+					$("#text").html(text);
 					jQuery('button[id="voteBtn"]').prop('disabled', false);
 					//callback(null, "GOT IT! Id is "+ id);
 				};
@@ -81,7 +82,20 @@ require_once('../utils/Deviceid.php');
 	</title>
 </head>
 <body>
-	<img id="img_url" src="../pics/no_image.jpg" height="70" width="100">
-	<?php require('buttons.php'); ?>
+	<div class="container">
+		<div class="row">
+			<div class="col-xs-12">
+				<img id="img_url" class="img-rounded" src="../pics/no_image.png" height="70" width="100">
+			</div>
+			<div class="col-xs-12">
+				<span id="text"></span>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-xs-12">
+				<?php require('buttons.php'); ?>
+			</div>
+		</div>
+	</div>
 </body>
 </html>
