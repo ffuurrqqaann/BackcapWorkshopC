@@ -53,6 +53,13 @@ require_once('../utils/Deviceid.php');
 					console.log("RpcController::onScreenConnected() screenId: " + id);
 					screenId = id;
 				};
+			self.sendButtonPress = function(buttonId)
+				{
+					var deviceId = "<?php echo $mobileDeviceId ?>";
+					var btnId = buttonId;
+					insertAnswer( questionId, deviceId, btnId );
+					//gameClient.notifyScreens("onButtonPressed",[100,200]);
+				};
 			self.onImageChange = function(id, url, callerId, connectionId, callback)
 				{
 					//console.log("TestSreen::onButtonPressed() x: "+x+" y: "+y+" callerId: "+callerId+" connectionId: "+connectionId);
