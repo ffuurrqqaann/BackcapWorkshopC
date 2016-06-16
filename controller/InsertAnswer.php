@@ -1,12 +1,9 @@
 <?php
-require_once ("database.php");
-
+require_once ("../utils/database.php");
 $question 	= $_GET['question_id'];
 $device 	= $_GET['device'];
 $button 	= $_GET['button'];
-
 try {
-	
 	$sql = "INSERT INTO answers (question_id, option_id, device_id) VALUES ('".$question."', '".$button."', '".$device."')";
 	$conn->query($sql);
     echo "New record created successfully";
