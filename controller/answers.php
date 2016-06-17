@@ -28,10 +28,35 @@ require_once('../utils/Deviceid.php');
 				}
 			});
 		}
+		
+		function checkUserVote( questionId, deviceId ) {
+			jQuery.ajax({
+				url: "CheckUserVote.php",
+				type: "GET",
+				data: {
+					question_id : questionId,
+					device : deviceId
+				},
+				success: function( result ) {
+					if( result=="1" ) {
+						jQuery('img[id="voteImg1"]').removeAttr("onclick");
+						jQuery('img[id="voteImg2"]').removeAttr("onclick");
+						jQuery('img[id="voteImg3"]').removeAttr("onclick");
+					} else {
+						jQuery('img[id="voteImg1"]').attr("onclick", "controller.sendButtonPress(1)");
+						jQuery('img[id="voteImg2"]').attr("onclick", "controller.sendButtonPress(2)");
+						jQuery('img[id="voteImg3"]').attr("onclick", "controller.sendButtonPress(3)");
+					}
+				}
+			});
+		}
+		
 		function TestController() {
 			var self = this;
 			var gameClient = null;
 			var questionId = null;
+			var deviceId = "<?php echo $mobileDeviceId ?>";
+			
 			self.connect = function()
 				{
 					gameClient = new GameClient(); 
@@ -55,19 +80,19 @@ require_once('../utils/Deviceid.php');
 				};
 			self.sendButtonPress = function(buttonId)
 				{
-					var deviceId = "<?php echo $mobileDeviceId ?>";
 					var btnId = buttonId;
 					insertAnswer( questionId, deviceId, btnId );
 					//gameClient.notifyScreens("onButtonPressed",[100,200]);
 				};
 			self.onImageChange = function(id, url, text, callerId, connectionId, callback)
 				{
-					//console.log("TestSreen::onButtonPressed() x: "+x+" y: "+y+" callerId: "+callerId+" connectionId: "+connectionId);
 					questionId = id;
 					$("#img_url").attr("src","../pics/"+url);
 					$("#text").html(text);
-					jQuery('button[id="voteBtn"]').prop('disabled', false);
-					//callback(null, "GOT IT! Id is "+ id);
+					
+					checkUserVote( questionId, deviceId );
+					
+					//jQuery('button[id="voteBtn"]').prop('disabled', false);
 				};
 		}
 		var controller = null; 
