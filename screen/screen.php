@@ -2,56 +2,59 @@
 <html>
 <head>
 	<style>
-		#text {
-			color: white;
+		#content-container {
+			padding: 5px;
+			border: 2px solid grey;
+			border-radius: 10px;
+		}
+		#content-image {
+		}
+		#content-text {
 			text-align: center;
+			color: white;
 			font-size: 270%;
 		}
+		#results-container{
+			padding: 5px;
+			border: 2px solid grey;
+			border-radius: 10px;
+			background-color: rgba(200,0,0,0.2);
+		}
+		#results {
+			color: white;
+			text-align: center;
+			font-size: 170%;
+		}
+		#engage-container{
+			padding: 10px;
+			border: 2px solid grey;
+			border-radius: 10px;
+			background-color: rgba(200,0,0,0.2);
+		}
 		#engage {
+			width: 100%;
+			height: 100px;
+
 			color: white;
 			text-align: center;
 			font-size: 170%;
 		}
 		html body {
 			background-color: rgba(0,0,0,1.00);
-		}
-		.wrapper{
-			-webkit-background-size: cover;
-			-moz-background-size: cover;
-			-o-background-size: cover;
-			background-size: cover;
-		}
-		
-		/* fullscreen setup */
-		html, body {
-			/* give this to all tags from html to .fullscreen */
 			height:100%;
 		}
-		.fullscreen,
-		.content-a {
-			width:100%;
-			height:100%;
-			overflow:hidden;
+		.peopleCarouselImg{
+			width: auto;
+			height: 480px;
+			max-height: 480px;
 		}
-		.fullscreen.overflow,
-		.fullscreen.overflow .content-a {
-			height:auto;
-			min-height:100%;
-		}
-		/* content centering styles */
-		.content-a {
-			display:table;
-		}
-		.content-b {
-			display:table-cell;
-			position:relative;
-			vertical-align:middle;
-			text-align:center;
-		}
-		
 	</style>
 	<meta charset="UTF-8">
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"/> 
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"/>
+	<script type="text/javascript" src="https://code.jquery.com/jquery-3.0.0.min.js"></script>
+	<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jqueryui/1.9.1/jquery-ui.min.js"></script>
+	<script type="text/javascript" src="../utils/animateText.js"></script>
+
 	<script type="text/javascript" src="http://spaceify.net/games/g/gamelib.min.js"></script>
 	<script type="text/javascript">	
 		//Group name for development use
@@ -100,45 +103,196 @@
 	</title>
 </head>
 <body>
-
-	<section class="fullscreen">
-		<div class="content-a">
-			<div class="content-b">
-
+	<div class="container">
+		<div class="row">
+			<div class="col-xs-10" id="content-container">
+				<div class="peopleCarouselImg" id="content-image">
 <?php
-	require_once('../utils/database.php');
-	$textArray = array();
-	$idsArray = array();
-	$urlsArray = array();
-	$row_number=0;
-	try {
-		echo "<div class=\"w3-content w3-section\"  align=\"center\">";
-		$stmt=$conn->query("SELECT id,text,image_url FROM backcap.questions ORDER BY id ASC"); 
-		foreach($stmt as $row){
-			$pic= $row['image_url'];
-			$textArray[$row_number]=$row['text'];
-			$idsArray[$row_number] = $row['id'];
-			$urlsArray[$row_number] = $row['image_url'];
-			$urlsArray[$row_number] = $row['image_url'];
-			$row_number=$row_number+1;
-			echo "<img class=\"mySlides img-rounded img-responsive\" src=\"../pics/" . $pic . "\" height=\"470\" width=\"620\">";
-		}
-		echo "</div>";
-	}
-	catch(PDOException $e) {
-		echo "Error: " . $e->getMessage();
-	}
-	$conn = null;
+				require_once('../utils/database.php');
+				$textArray = array();
+				$idsArray = array();
+				$urlsArray = array();
+				$row_number=0;
+				try {
+					$stmt=$conn->query("SELECT id,text,image_url FROM backcap.questions ORDER BY id ASC"); 
+					foreach($stmt as $row){
+						$pic= $row['image_url'];
+						$textArray[$row_number]=$row['text'];
+						$idsArray[$row_number] = $row['id'];
+						$urlsArray[$row_number] = $row['image_url'];
+						$urlsArray[$row_number] = $row['image_url'];
+						$row_number=$row_number+1;
+						echo "<img class=\"peopleCarouselImg center-block mySlides img-rounded img-responsive \" src=\"../pics/" . $pic . "\">";
+					}
+				}
+				catch(PDOException $e) {
+					echo "Error: " . $e->getMessage();
+				}
+				$conn = null;
 ?>
-
-
-
-					<p class="text-center" id="text"></p>
-					<p class="text-center" id="engage">Answer via panoulu_ac http://<?php echo $_SERVER['HTTP_HOST'];?>/controller.php</p>
+				</div>
+				<div id="content-text"></div>
+			</div>
+			<div class="col-xs-2" id="results-container">
+				<div id="results">
+					AWARENESS
+				</div>
+				
+			</div>
 		</div>
-	</section>
+		
 
+
+
+		
+		
+		<div class="row">
+			<div class="col-xs-12" id="engage-container">
+				<div id="engage">
+					<ul id="engage-text">
+						<li>WELCOME</li>
+						<li>JOIN US!</li>
+						<li>VOTE!</li>
+						<li>Answer via panoulu_ac http://<?php echo $_SERVER['HTTP_HOST'];?>/controller.php</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
 	<script>
+	//Homepage text animation
+	var animations = {
+		rightToLeft: {
+			start: {
+				top:'55px',
+				'font-size': '37px',
+				'font-weight': 700,
+				color: '#CCC'
+			}
+		},
+		leftToRight: {
+			start: {
+				top: '50px',
+				'font-size': '30px',
+				color: '#FDFA27',
+				'font-weight': 700
+			}
+		},
+		fadeIn: {
+			start: {
+				left:null,
+				top:'10%',
+				right:'25%',
+				'font-size': '30px',
+				'font-weight': 700
+			}
+		}
+	};
+	var textObjects = [
+			{
+				offset: 0,
+				duration: 2000,
+				animation: "explode",
+			},
+			{
+				animation: "rightToLeft",
+				offset: 100,
+				positions: animations.rightToLeft
+			},
+			{
+				animation: "leftToRight",
+				offset: 100,
+				positions: animations.leftToRight
+			},
+			{
+				offset:500,
+				animation: "fadeIn",
+				positions: animations.fadeIn,
+				duration: 10000
+			}
+    ];
+	var options = {
+        //repeat: 5
+    };
+	
+	$(document).ready(function(){
+		$("#engage-text").animateText(textObjects, options, animations);
+		
+/*		$("#engage-text").animateText([
+			{
+				offset: 0,
+				duration: 2000,
+				animation: "explode",
+			},
+			{
+				animation: "rightToLeft",
+				offset: 0,
+				positions: positions.rightToLeft
+			},
+			{
+				animation: "leftToRight",
+				offset: 0,
+				positions: positions.leftToRight
+			},
+			{
+				offset:500,
+				animation: "fadeIn",
+				positions: positions.fadeIn,
+				duration: 6000
+			},*/
+/*			{
+				offset: 3600,
+				duration: 1000,
+				animation: "explode",
+			},
+			{
+				animation: "rightToLeft",
+				offset: 3600,
+				positions: positions.rightToLeft
+			},
+			{
+				animation: "leftToRight",
+				offset: 3600,
+				positions: positions.leftToRight
+			},
+			{
+				offset:4100,
+				animation: "fadeIn",
+				positions: positions.fadeIn,
+				duration: 2600
+			},
+			{
+				offset: 7200,
+				duration: 1000,
+				animation: "explode",
+			},
+			{
+				animation: "rightToLeft",
+				offset: 7200,
+				positions: positions.rightToLeft
+			},
+			{
+				animation: "leftToRight",
+				offset: 7200,
+				positions: positions.leftToRight
+			},
+			{
+				offset: 7700,
+				animation: "fadeIn",
+				positions: positions.fadeIn,
+				duration: 2600
+			},
+			{
+				offset: 10800,
+				animation: "implode",
+				positions: {
+					1: {
+						duration: 4200
+					}
+				}
+			}*/
+/*		]);*/
+	});
 <?php
 		$js_text_array = json_encode(array_values($textArray));
 		$js_id_array = json_encode(array_values($idsArray));
@@ -161,7 +315,7 @@
 			}
 			x[myIndex-1].style.display = "block";
 			setTimeout(carousel, 10000); // Change image every 4 seconds
-			document.getElementById("text").innerHTML =  javascript_text_array[myIndex-1];
+			document.getElementById("content-text").innerHTML =  javascript_text_array[myIndex-1];
 			screen.imageChanged(javascript_id_array[myIndex-1],javascript_url_array[myIndex-1],javascript_text_array[myIndex-1]);
 		}
 	</script>
