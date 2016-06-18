@@ -42,40 +42,11 @@ require_once('../utils/Deviceid.php');
 						jQuery('img[id="voteImg1"]').removeAttr("onclick");
 						jQuery('img[id="voteImg2"]').removeAttr("onclick");
 						jQuery('img[id="voteImg3"]').removeAttr("onclick");
-						
-						checkStatistics(questionId);
 					} else {
 						jQuery('img[id="voteImg1"]').attr("onclick", "controller.sendButtonPress(1)");
 						jQuery('img[id="voteImg2"]').attr("onclick", "controller.sendButtonPress(2)");
 						jQuery('img[id="voteImg3"]').attr("onclick", "controller.sendButtonPress(3)");
 					}
-				}
-			});
-		}
-		
-		function checkUserVote( questionId) {
-			jQuery.ajax({
-				url: "checkStatistics.php",
-				type: "GET",
-				data: {
-					question_id : questionId
-				},
-				success: function( result ) {
-					var stats = result.split(",");
-					
-					var bad = stats[0];
-					var neutral = stats[1];
-					var good = stats[2];
-					var total = stats[3];
-					
-					jQuery("#voteCounter1").html(bad);
-					jQuery("#voteCounter2").html(neutral);
-					jQuery("#voteCounter3").html(good);
-					
-					jQuery("#voteImg1").attr("src", "../pics/baddis.png");
-					jQuery("#voteImg2").attr("src", "../pics/neutraldis.png");
-					jQuery("#voteImg3").attr("src", "../pics/gooddis.png");
-					
 				}
 			});
 		}
@@ -122,7 +93,9 @@ require_once('../utils/Deviceid.php');
 					questionId = id;
 					$("#img_url").attr("src","../pics/"+url);
 					$("#text").html(text);
+					
 					checkUserVote( questionId, deviceId );
+					
 					//jQuery('button[id="voteBtn"]').prop('disabled', false);
 				};
 		}
@@ -141,7 +114,7 @@ require_once('../utils/Deviceid.php');
 	<div class="container">
 		<div class="row text-center">
 			<div class="col-xs-12">
-				<img id="img_url" class="img-rounded" src="../pics/no_image.png" height="150"">
+				<img id="img_url" class="img-rounded" src="../pics/no_image.png" height="70" width="100">
 			</div>
 			<div class="col-xs-12">
 				<span id="text"></span>
